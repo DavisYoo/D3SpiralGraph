@@ -1,0 +1,202 @@
+<html>
+<head>
+	<style>
+		.chart div {
+		  font: 10px sans-serif;
+		  background-color: steelblue;
+		  text-align: right;
+		  padding: 3px;
+		  margin: 1px;
+		  color: white;
+		}
+	</style>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+	<svg width="960" height="600">
+		
+	<a transform="translate(100,100)">
+    	<g>
+      		<circle r="50" fill="#007DA2"></circle>
+    	</g>
+
+    	<g>
+      <clipPath id="g-clip">
+      	<rect id="g-clip-rect" y="-50" height="15" x="-50" width="100">
+      	</rect>
+      </clipPath>
+      <circle clip-path="url(#g-clip)" r="47" fill="#fff" ></circle>
+    	</g>
+  	</a>
+
+
+  	<a transform="translate(100,210)">
+    	<g>
+      		<circle r="50" fill="#007DA2"></circle>
+    	</g>
+
+    	<g>
+      <clipPath id="g-clip">
+      	<rect id="g-clip-rect" y="-50" height="20" x="-50" width="100">
+      	</rect>
+      </clipPath>
+      <circle clip-path="url(#g-clip)" r="47" fill="#fff" ></circle>
+    	</g>
+  	</a>
+
+
+  	<a transform="translate(100,320)">
+    	<g>
+      		<circle r="50" fill="#007DA2"></circle>
+    	</g>
+
+    	<g>
+      <clipPath id="g-clip">
+      	<rect id="g-clip-rect" y="-50" height="12.5" x="-50" width="100">
+      	</rect>
+      </clipPath>
+      <circle clip-path="url(#g-clip)" r="47" fill="#fff" ></circle>
+    	</g>
+  	</a>
+
+
+  	<a transform="translate(100,430)">
+    	<g>
+      		<circle r="50" fill="#007DA2"></circle>
+    	</g>
+
+    	<g>
+      <clipPath id="g-clip">
+      	<rect id="g-clip-rect" y="-50" height="4.5" x="-50" width="100">
+      	</rect>
+      </clipPath>
+      <circle clip-path="url(#g-clip)" r="47" fill="#fff" ></circle>
+    	</g>
+  	</a>
+
+
+  	<a transform="translate(100,540)">
+    	<g>
+      		<circle r="50" fill="#007DA2"></circle>
+    	</g>
+
+    	<g>
+      <clipPath id="g-clip">
+      	<rect id="g-clip-rect" y="-50" height="75" x="-50" width="100">
+      	</rect>
+      </clipPath>
+      <circle clip-path="url(#g-clip)" r="47" fill="#fff" ></circle>
+    	</g>
+  	</a>
+
+
+</svg>
+	<script>
+/*
+		data = [{"label": "english", "value":1700/2000},
+				{"label": "french", "value":4000/5000},
+				{"label": "japanese", "value":3500/4000},
+				{"label": "jamaican", "value":1930/2000},
+				{"label": "kantonese", "value":500/2000}];
+			
+*/
+		var tau = 2 * Math.PI; // http://tauday.com/tau-manifesto
+	
+		var arc = d3.arc()
+			.innerRadius(170)
+			.outerRadius(200)
+			.startAngle(0);
+
+		var arc2 = d3.arc()
+			.innerRadius(130)
+			.outerRadius(160)
+			.startAngle(0);
+
+		var arc3 = d3.arc()
+			.innerRadius(90)
+			.outerRadius(120)
+			.startAngle(0);
+
+		var arc4 = d3.arc()
+			.innerRadius(50)
+			.outerRadius(80)
+			.startAngle(0);
+
+		var arc5 = d3.arc()
+			.innerRadius(10)
+			.outerRadius(40)
+			.startAngle(0);
+	
+		// Get the SVG container, and apply a transform such that the origin is the
+		// center of the canvas. This way, we don’t need to position arcs individually.
+		var svg = d3.select("svg"),
+			width = +svg.attr("width"),
+			height = +svg.attr("height"),
+			g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+	
+
+
+		// Add the background arc, from 0 to 100% (tau).
+		var background = g.append("path")
+			.datum({endAngle: tau})
+			.style("fill", "#ddd")
+			.attr("d", arc);
+
+		// Add the foreground arc in blue, currently showing 85%.
+		var foreground = g.append("path")
+			.datum({endAngle: 1700/2000 * tau})
+			.style("fill", "#007DA2")
+			.attr("d", arc);
+
+
+		// arc2 background
+		var background = g.append("path")
+			.datum({endAngle: tau})
+			.style("fill", "#ddd")
+			.attr("d", arc2);
+
+		// arc2 foreground 80%
+		var foreground = g.append("path")
+			.datum({endAngle: 4000/5000 * tau})
+			.style("fill", "#007DA2")
+			.attr("d", arc2);
+
+
+		// arc3 background
+		var background = g.append("path")
+			.datum({endAngle: tau})
+			.style("fill", "#ddd")
+			.attr("d", arc3);
+
+		// arc3 foreground 87.5%
+		var foreground = g.append("path")
+			.datum({endAngle: 3500/4000 * tau})
+			.style("fill", "#007DA2")
+			.attr("d", arc3);
+
+		// arc4 background
+		var background = g.append("path")
+			.datum({endAngle: tau})
+			.style("fill", "#ddd")
+			.attr("d", arc4);
+
+		// arc4 foreground 96.5%
+		var foreground = g.append("path")
+			.datum({endAngle: 1930/2000 * tau})
+			.style("fill", "#007DA2")
+			.attr("d", arc4);
+
+		// arc5 background
+		var background = g.append("path")
+			.datum({endAngle: tau})
+			.style("fill", "#ddd")
+			.attr("d", arc5);
+
+		// arc5 foreground 25%
+		var foreground = g.append("path")
+			.datum({endAngle: 500/2000 * tau})
+			.style("fill", "#007DA2")
+			.attr("d", arc5);
+	</script>	
+</body>
+</html>

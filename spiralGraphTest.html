@@ -1,0 +1,102 @@
+
+<html>
+<head>
+	<style>
+		body {
+			background: black;
+		}
+		
+		.chart div {
+		  font: 10px sans-serif;
+		  background-color: steelblue;
+		  text-align: right;
+		  padding: 3px;
+		  margin: 1px;
+		  color: white;
+		}
+	</style>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+	<script>
+		var data = [
+		  { "id": 1, "group": "english", "total": 2000, "remaining": 1700},
+		  { "id": 2, "group": "french", "total": 5000, "remaining": 4000},
+		  { "id": 3, "group": "japanese", "total": 4000, "remaining": 3500},
+		  { "id": 4, "group": "jamaican", "total": 2000, "remaining": 1930},
+		  { "id": 4, "group": "kantonese", "total": 2000, "remaining": 500},
+		  { "id": 1, "group": "english", "total": 2000, "remaining": 1700},
+		  { "id": 2, "group": "french", "total": 5000, "remaining": 4000},
+		  { "id": 3, "group": "japanese", "total": 4000, "remaining": 3500},
+		  { "id": 4, "group": "jamaican", "total": 2000, "remaining": 1930},
+		  { "id": 4, "group": "kantonese", "total": 2000, "remaining": 500},		  
+		  { "id": 1, "group": "english", "total": 2000, "remaining": 1700},
+		  { "id": 2, "group": "french", "total": 5000, "remaining": 4000},
+		  { "id": 3, "group": "japanese", "total": 4000, "remaining": 3500},
+		  { "id": 4, "group": "jamaican", "total": 2000, "remaining": 1930},
+		  { "id": 4, "group": "kantonese", "total": 2000, "remaining": 500}		  
+
+		].slice();
+
+		// Data Accessors
+		var group     = function(d) { return d.group };
+		var total     = function(d) { return d.total };
+		var remaining = function(d) { return d.remaining };
+		
+		// Graph / Circle sizing
+		var tau       = 2 * Math.PI; // http://tauday.com/tau-manifesto
+		var diameter  = 700;
+		var radius    = diameter / 2;		
+		var ringSize  = radius / (data.length + 1);
+		var ringSpace = ringSize * .33;
+		
+		
+		// Add the SVG container, and apply a transform such that the origin is the
+		// center of the canvas. This way, we don’t need to position arcs individually.		
+		var g = d3.select("body").append("svg:svg")
+ 								.attr("width", diameter)
+								.attr("height", diameter)
+								.append("g").attr("transform", "translate(" + radius + "," + radius + ")");
+
+
+		// Draw Graph
+		var refreshGraph = function() {
+			var graph = g.selectAll("path").data(data).enter();
+
+			// Draw concentric rings in data index order (i)
+			var arc = function(d, i, endAngle) {
+				var outerRadius = radius - (ringSize * i+1);
+				var innerRadius = outerRadius - ringSize + ringSpace;
+				
+				return (d3.arc()
+					.outerRadius(outerRadius)
+					.innerRadius(innerRadius)
+					.startAngle(0)
+					.endAngle(endAngle))(d, i);
+			}
+			
+			// Calc full arc for background
+			var backgroundArc = function(d, i) {
+				return arc(d, i, tau);
+			}
+
+			// Calc partial arc for % remaining
+			var foregroundArc = function(d, i) {
+				return arc(d, i, (remaining(d)/total(d) * tau));
+			}
+
+			// Draw the background arc
+			graph.append("path")				
+				.style("fill", "#222")
+				.attr("d", backgroundArc);
+			
+			// Draw the foreground arc
+			graph.append("path")				
+				.style("fill", function(d,i) { return d3.rgb(30, 144, 255).darker(.20*i); })
+				.attr("d", foregroundArc);
+		}
+
+		refreshGraph();
+	</script>	
+</body>
+</html>
